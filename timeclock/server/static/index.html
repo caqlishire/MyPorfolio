@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f172a">
+  <title>Time Clock</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <!-- Login -->
+  <main id="login-view" class="login hidden">
+    <form id="login-form" class="card login-card">
+      <div class="brand"><span class="logo">⏱</span> Time Clock</div>
+      <p class="muted">Admin sign in</p>
+      <label for="password">Password</label>
+      <input id="password" type="password" autocomplete="current-password" required autofocus>
+      <button type="submit" class="btn primary">Sign in</button>
+      <p id="login-error" class="error" role="alert"></p>
+    </form>
+  </main>
+
+  <!-- App -->
+  <div id="app-view" class="hidden">
+    <header class="topbar">
+      <div class="brand"><span class="logo">⏱</span> Time Clock</div>
+      <div id="sync-pill" class="pill" title="Last time the office sync program reported in">…</div>
+      <button id="logout" class="btn ghost small">Sign out</button>
+    </header>
+
+    <nav class="tabs" role="tablist">
+      <button class="tab active" data-tab="today">Today</button>
+      <button class="tab" data-tab="timesheet">Timesheet</button>
+      <button class="tab" data-tab="punches">Punches</button>
+      <button class="tab" data-tab="employees">Employees</button>
+    </nav>
+
+    <main class="content">
+      <!-- Today -->
+      <section id="tab-today" class="tab-panel">
+        <div class="stats">
+          <div class="stat"><div class="stat-label">Clocked in now</div><div id="stat-in" class="stat-value">–</div></div>
+          <div class="stat"><div class="stat-label">Came in today</div><div id="stat-present" class="stat-value">–</div></div>
+          <div class="stat"><div class="stat-label">Hours so far</div><div id="stat-hours" class="stat-value">–</div></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2 id="today-title">Today</h2><button id="refresh-today" class="btn ghost small">Refresh</button></div>
+          <div id="today-list" class="list"></div>
+        </div>
+      </section>
+
+      <!-- Timesheet -->
+      <section id="tab-timesheet" class="tab-panel hidden">
+        <div class="card filters">
+          <div class="presets">
+            <button class="btn chip" data-range="this-week">This week</button>
+            <button class="btn chip" data-range="last-week">Last week</button>
+            <button class="btn chip" data-range="last-14">Last 14 days</button>
+            <button class="btn chip" data-range="this-month">This month</button>
+            <button class="btn chip" data-range="last-month">Last month</button>
+          </div>
+          <div class="range">
+            <label>From <input type="date" id="ts-start"></label>
+            <label>To <input type="date" id="ts-end"></label>
+            <button id="ts-load" class="btn primary small">Show</button>
+            <a id="ts-csv" class="btn small" href="#" download>Export CSV</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2 id="ts-title">Timesheet</h2><span id="ts-total" class="muted"></span></div>
+          <div id="ts-body"></div>
+        </div>
+      </section>
+
+      <!-- Punches -->
+      <section id="tab-punches" class="tab-panel hidden">
+        <div class="card filters">
+          <div class="range">
+            <label>From <input type="date" id="p-start"></label>
+            <label>To <input type="date" id="p-end"></label>
+            <label>Employee <select id="p-user"><option value="">Everyone</option></select></label>
+            <button id="p-load" class="btn primary small">Show</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="table-wrap"><table class="table"><thead><tr><th>Date</th><th>Time</th><th>Employee</th><th>ID</th></tr></thead><tbody id="p-body"></tbody></table></div>
+        </div>
+      </section>
+
+      <!-- Employees -->
+      <section id="tab-employees" class="tab-panel hidden">
+        <div class="card">
+          <div class="card-head"><h2>Employees</h2></div>
+          <p class="muted small-text">Names come from the clock. Type a different name here to override it in the dashboard (the clock is not changed).</p>
+          <div class="table-wrap"><table class="table"><thead><tr><th>ID</th><th>Name on clock</th><th>Dashboard name</th><th></th></tr></thead><tbody id="e-body"></tbody></table></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast hidden" role="status"></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

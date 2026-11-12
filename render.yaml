@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: timeclock
+    runtime: python
+    plan: free
+    rootDir: timeclock/server
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /healthz
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: ADMIN_PASSWORD
+        sync: false        # you type this in when creating the service
+      - key: DATABASE_URL
+        sync: false        # paste your Neon Postgres connection string
+      - key: AGENT_KEY
+        generateValue: true
+      - key: SECRET_KEY
+        generateValue: true
